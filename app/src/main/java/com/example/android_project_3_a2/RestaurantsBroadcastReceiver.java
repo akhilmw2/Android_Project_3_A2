@@ -13,7 +13,7 @@ public class RestaurantsBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
 
-        Log.d(TAG, "✅ Restaurants Broadcast Received!");
+        Log.d(TAG, "Restaurants Broadcast Received!");
         Toast.makeText(context, "Opening Restaurants", Toast.LENGTH_SHORT).show();
 
         Intent newIntent = new Intent(context, RestaurantsActivity.class);

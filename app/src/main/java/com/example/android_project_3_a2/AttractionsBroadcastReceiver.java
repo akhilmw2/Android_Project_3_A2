@@ -15,7 +15,7 @@ public class AttractionsBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Log.d(TAG, "✅ Attractions Broadcast Received!");
+        Log.d(TAG, "Attractions Broadcast Received!");
         Toast.makeText(context, "Opening Attractions", Toast.LENGTH_SHORT).show();
 
         Intent newIntent = new Intent(context, AttractionsActivity.class);

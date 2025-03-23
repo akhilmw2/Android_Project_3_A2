@@ -18,7 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class MainActivity extends AppCompatActivity {
     private AttractionsBroadcastReceiver attractionsReceiver;
     private RestaurantsBroadcastReceiver restaurantsReceiver;
-    private static final String TAG = "BroadcastTestA2";
+    private static final String TAG = "BroadcastTest";
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         registerReceiver(attractionsReceiver, attractionsFilter, RECEIVER_EXPORTED);
         registerReceiver(restaurantsReceiver, restaurantsFilter, RECEIVER_EXPORTED);
 
-        Log.d(TAG, "✅ Both Broadcast Receivers Registered");
+        Log.d(TAG, "Both Broadcast Receivers Registered");
 
 
     }
@@ -53,11 +53,11 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         if (attractionsReceiver != null) {
             unregisterReceiver(attractionsReceiver);
-            Log.d(TAG, "❌ Attractions Receiver Unregistered");
+            Log.d(TAG, "Attractions Receiver Unregistered");
         }
         if (restaurantsReceiver != null) {
             unregisterReceiver(restaurantsReceiver);
-            Log.d(TAG, "❌ Restaurants Receiver Unregistered");
+            Log.d(TAG, "Restaurants Receiver Unregistered");
         }
     }
 

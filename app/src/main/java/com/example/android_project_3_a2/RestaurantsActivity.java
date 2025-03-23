@@ -1,6 +1,9 @@
 package com.example.android_project_3_a2;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -55,6 +58,11 @@ public class RestaurantsActivity extends AppCompatActivity {
                     findViewById(R.id.containerWebView).setVisibility(View.GONE);
                     viewModel.selectUrl(null);
                     isWebFragmentVisible = false;
+                    // Clear selection in the list fragment:
+                    Fragment listFragment = getSupportFragmentManager().findFragmentById(R.id.containerList);
+                    if (listFragment instanceof GenericListFragment) {
+                        ((GenericListFragment) listFragment).clearSelection();
+                    }
                 } else {
                     // No WebView fragment, so disable our callback and let the system handle the back press
                     setEnabled(false);
@@ -89,5 +97,26 @@ public class RestaurantsActivity extends AppCompatActivity {
         // Make the web container visible and mark the fragment as visible
         webContainer.setVisibility(View.VISIBLE);
         isWebFragmentVisible = true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        // Change the item title for Restaurants
+        MenuItem item = menu.findItem(R.id.action_switch);
+        item.setTitle("Switch to Attractions");
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_switch) {
+            // Switch to AttractionsActivity
+            startActivity(new Intent(this, AttractionsActivity.class));
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

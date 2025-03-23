@@ -12,11 +12,13 @@ import java.util.List;
 public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder> {
 
     public interface OnItemClickListener {
-        void onItemClick(Item item);
+        void onItemClick(Item item, int position);
     }
 
     private final List<Item> items;
     private final OnItemClickListener listener;
+
+    private int selectedPosition = RecyclerView.NO_POSITION;
 
     public MyListAdapter(List<Item> items, OnItemClickListener listener) {
         this.items = items;
@@ -29,10 +31,17 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
             super(view);
             textView = view.findViewById(android.R.id.text1);
         }
-        public void bind(final Item item, final OnItemClickListener listener) {
+        public void bind(final Item item, final OnItemClickListener listener, final int position, final int selectedPosition) {
             textView.setText(item.getName());
-            itemView.setOnClickListener(v -> listener.onItemClick(item));
-            Log.d("MyListAdapter", "Item clicked: " + item.getName());
+            // Change background if this position is selected
+            if (position == selectedPosition) {
+                itemView.setBackgroundColor(0xFFE0E0E0); // light gray highlight
+            } else {
+                itemView.setBackgroundColor(0x00000000); // transparent
+            }
+            itemView.setOnClickListener(v -> {
+                listener.onItemClick(item, position);
+            });
         }
     }
 
@@ -46,10 +55,16 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
     }
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind(items.get(position), listener);
+        holder.bind(items.get(position), listener, position, selectedPosition);
     }
     @Override
     public int getItemCount() {
         return items.size();
+    }
+
+    // Call this from your fragment/activity when an item is clicked.
+    public void setSelectedPosition(int position) {
+        selectedPosition = position;
+        notifyDataSetChanged();
     }
 }

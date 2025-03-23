@@ -19,6 +19,8 @@ public class GenericListFragment extends Fragment {
     private String listType; // "attractions" or "restaurants"
     private SelectionViewModel viewModel;
 
+    private MyListAdapter adapter;
+
     public GenericListFragment() {
         // Required empty public constructor
     }
@@ -35,7 +37,6 @@ public class GenericListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Retain this fragment across configuration changes (if desired)
         setRetainInstance(true);
         viewModel = new ViewModelProvider(requireActivity()).get(SelectionViewModel.class);
         if (getArguments() != null) {
@@ -56,7 +57,6 @@ public class GenericListFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         List<Item> items;
-        // Check the listType and load appropriate sample data
         if ("attractions".equalsIgnoreCase(listType)) {
             items = Arrays.asList(
                     new Item("Lincoln Park Zoo", "https://www.lpzoo.org"),
@@ -67,24 +67,34 @@ public class GenericListFragment extends Fragment {
             );
         } else if ("restaurants".equalsIgnoreCase(listType)) {
             items = Arrays.asList(
-                    new Item("Restaurant A", "https://www.restauranta.com"),
-                    new Item("Restaurant B", "https://www.google.com"),
-                    new Item("Restaurant C", "https://www.google.com"),
-                    new Item("Restaurant D", "https://www.restaurantd.com"),
-                    new Item("Restaurant E", "https://www.restaurante.com")
+                    new Item("Miss Ricky's", "https://virginhotels.com/chicago/eat-drink/miss-rickys/"),
+                    new Item("The Gage", "https://thegagechicago.com/"),
+                    new Item("London House Chicago", "https://londonhousechicago.com/"),
+                    new Item("La Grande Boucherie", "https://www.boucherieus.com/location/chicago/"),
+                    new Item("Terrace 16", "https://www.trumphotels.com/chicago/dining/fine-dining-chicago")
             );
         } else {
             // Fallback to an empty list if no valid type is provided
             items = List.of();
         }
 
-        MyListAdapter adapter = new MyListAdapter(items, new MyListAdapter.OnItemClickListener() {
+        adapter = new MyListAdapter(items, new MyListAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(Item item) {
-                // When an item is clicked, update the ViewModel with the item's URL.
+            public void onItemClick(Item item, int position) {
                 viewModel.selectUrl(item.getUrl());
+                adapter.setSelectedPosition(position);
             }
         });
         recyclerView.setAdapter(adapter);
+
+
+
+    }
+
+    //method to clear the selection highlight in the list.
+    public void clearSelection() {
+        if (adapter != null) {
+            adapter.setSelectedPosition(RecyclerView.NO_POSITION);
+        }
     }
 }

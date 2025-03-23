@@ -1,6 +1,9 @@
 package com.example.android_project_3_a2;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -19,6 +22,8 @@ public class AttractionsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attractions);
+
+
 
         // Add the generic list fragment with parameter "attractions" if not restored
         if (savedInstanceState == null) {
@@ -53,6 +58,11 @@ public class AttractionsActivity extends AppCompatActivity {
                     findViewById(R.id.containerWebView).setVisibility(View.GONE);
                     viewModel.selectUrl(null);
                     isWebFragmentVisible = false;
+                    // Clear selection in the list fragment:
+                    Fragment listFragment = getSupportFragmentManager().findFragmentById(R.id.containerList);
+                    if (listFragment instanceof GenericListFragment) {
+                        ((GenericListFragment) listFragment).clearSelection();
+                    }
                 } else {
                     setEnabled(false);
                     getOnBackPressedDispatcher().onBackPressed();
@@ -86,6 +96,25 @@ public class AttractionsActivity extends AppCompatActivity {
         // Make the web container visible and mark the fragment as visible
         webContainer.setVisibility(View.VISIBLE);
         isWebFragmentVisible = true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_switch) {
+            // Switch to RestaurantsActivity
+            Intent intent = new Intent(this, RestaurantsActivity.class);
+            startActivity(intent);
+            finish(); // Optionally finish current activity
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

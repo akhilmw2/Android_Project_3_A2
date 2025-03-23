@@ -82,10 +82,17 @@ public class GenericListFragment extends Fragment {
             @Override
             public void onItemClick(Item item, int position) {
                 viewModel.selectUrl(item.getUrl());
-                adapter.setSelectedPosition(position);
+                viewModel.setSelectedPosition(position);
             }
         });
         recyclerView.setAdapter(adapter);
+
+        // Observe the selected position from the ViewModel
+        viewModel.getSelectedPosition().observe(getViewLifecycleOwner(), pos -> {
+            if (pos != null) {
+                adapter.setSelectedPosition(pos);
+            }
+        });
 
 
 

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Chicago Explorer!</string>
     <string name="switch_to_restaurants">Switch to Restaurants</string>
+    <string name="app_welcome">Welcome to Chicago Explorer!</string>
 </resources>
